@@ -27,12 +27,15 @@ def create_dictionary_from_regions(regions, create_segments):
 def create_segments_from_regions(sorted_regions, regions_dict):
     for i, region in enumerate(sorted_regions):
         if i > 0:
+            current_key = 0
             keys = len(list(regions_dict.keys()))
             for key in regions_dict.keys():
                 if region.Start < regions_dict[key][len(regions_dict[key])-1].End:
                     print('Adding Region: ', region.Start, region.End)
                     print('Segment was: ', regions_dict[key][len(regions_dict[key])-1].Start, regions_dict[key][len(regions_dict[key])-1].End)
-                    regions_dict[key][len(regions_dict[key])-1].End = region.End
+                    if region.End > regions_dict[key][len(regions_dict[key])-1].End:
+                        print('Extending segment: ', regions_dict[key][len(regions_dict[key])-1].Start, regions_dict[key][len(regions_dict[key])-1].End)
+                        regions_dict[key][len(regions_dict[key])-1].End = region.End
                     print('Segment is now: ', regions_dict[key][len(regions_dict[key])-1].Start, regions_dict[key][len(regions_dict[key])-1].End)
                     break
                 else:
