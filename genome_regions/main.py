@@ -10,7 +10,7 @@ def main():
     input_file = Path('../Regions_Small.txt')
     if input_file.exists():
         regions = create_regions_from_file(input_file)
-        regions_dict = create_dictionary_from_regions(regions, False)
+        regions_dict = create_dictionary_from_regions(regions, True)
         for key in regions_dict.keys():
             print(f"Row {key}:")
             for region in regions_dict[key]:
