@@ -1,22 +1,34 @@
 from models import Region
+import re
 
-def create_regions_from_file(file_path):
+
+def get_regions_from_file(file_path):
     regions = []
     with open(file_path, 'r') as file:
         content = file.readlines()
         id = 0
         for line in content:
+            data = re.sub(r"\s+", '_', line)
+            print('Line:', line, 'Data:', data)
             region = Region()
             region.Id = id
-            region.Start = line.split('\t')[0]
-            region.End = line.split('\t')[1].strip()
+            region.Start = data.split('_')[0].strip()
+            region.End = data.split('_')[1].strip()
             regions.append(region)
             id += 1
         return regions
 
+def generate_file(regions_dict, output_path, file_name):
+    with open(str(output_path) + '/' + file_name, 'w') as file:
+        for key in regions_dict.keys():
+            for region in regions_dict[key]:
+                file.write(f"{region.Start}\t{region.End}\n")
+    
 
 def create_dictionary_from_regions(regions, create_segments):
-    sorted_regions =  sorted(regions, key=lambda x: x.Start)
+    sorted_regions = sorted(regions, key=lambda x: x.Start)
+    for item in sorted_regions:
+        print('Sorted region:', item.Start, item.End)
     regions_dict = {0: [sorted_regions[0]]}
     if create_segments:
         return create_segments_from_regions(sorted_regions, regions_dict)
