@@ -1,5 +1,4 @@
 from models import Region
-import re
 
 
 def get_regions_from_file(file_path):
@@ -8,12 +7,10 @@ def get_regions_from_file(file_path):
         content = file.readlines()
         id = 0
         for line in content:
-            data = re.sub(r"\s+", '_', line)
-            print('Line:', line, 'Data:', data)
             region = Region()
             region.Id = id
-            region.Start = data.split('_')[0].strip()
-            region.End = data.split('_')[1].strip()
+            region.Start = int(line.split('\t')[0].strip())
+            region.End = int(line.split('\t')[1].strip())
             regions.append(region)
             id += 1
         return regions
@@ -27,8 +24,6 @@ def generate_file(regions_dict, output_path, file_name):
 
 def create_dictionary_from_regions(regions, create_segments):
     sorted_regions = sorted(regions, key=lambda x: x.Start)
-    for item in sorted_regions:
-        print('Sorted region:', item.Start, item.End)
     regions_dict = {0: [sorted_regions[0]]}
     if create_segments:
         return create_segments_from_regions(sorted_regions, regions_dict)
@@ -41,7 +36,7 @@ def create_segments_from_regions(sorted_regions, regions_dict):
     for i, region in enumerate(sorted_regions):
         if i > 0:           
             while i < len(sorted_regions):                
-                if region.Start < regions_dict[key][len(regions_dict[key])-1].End:
+                if region.Start <= regions_dict[key][len(regions_dict[key])-1].End:
                     if region.End > regions_dict[key][len(regions_dict[key])-1].End:                       
                         regions_dict[key][len(regions_dict[key])-1].End = region.End                    
                     break

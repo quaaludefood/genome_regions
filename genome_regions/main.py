@@ -14,12 +14,15 @@ def main():
         output_path.mkdir()
     if input_file.exists():
         regions = get_regions_from_file(input_file)
-        regions_dict = create_dictionary_from_regions(regions, True)
-        # for key in regions_dict.keys():
-        #     print(f"Row {key}:")
-        #     for region in regions_dict[key]:
-        #         print(f"{region.Start}\t{region.End}")
-
+        regions_dict = create_dictionary_from_regions(regions, False)
+        total_rows = 0
+        total_regions = 0
+        for key in regions_dict.keys():
+            total_rows += 1
+            for region in regions_dict[key]:
+                total_regions += 1
+                print(f"{region.Start}\t{region.End}")
+        print(f"Total rows: {total_rows} Total regions: {total_regions}")
         generate_file(regions_dict, output_path , 'output.txt')
 
     else:
