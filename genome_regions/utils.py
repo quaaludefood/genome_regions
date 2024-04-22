@@ -45,9 +45,8 @@ def create_segments_from_regions(regions) -> list[Segment]:
     for i, region in enumerate(sorted_regions):
         if i > 0:           
             while i < len(sorted_regions):            
-                if region.Start <= regions_dict[key][len(regions_dict[key])-1].End:
-                    if region.End > regions_dict[key][len(regions_dict[key])-1].End:
-                        regions_dict[key].append(region)
+                if any(region.Start <= x.End for x in regions_dict[key]):
+                    regions_dict[key].append(region)
                   
                     break
                 else:
