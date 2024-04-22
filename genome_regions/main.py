@@ -1,6 +1,6 @@
 # Description: This is the main file for the genome_regions package. It is used to validate the file path.
 from pathlib import Path
-from utils import get_regions_from_file, create_rows_from_regions, create_segments_from_regions, generate_file, generate_segments_file
+from utils import get_regions_from_file, create_rows_from_regions, create_segments_from_regions, generate_rows_file, generate_segments_file
 
 
 def main():
@@ -23,7 +23,7 @@ def main():
         #         print(f"{region.Start}\t{region.End}")
         # print(f"Total rows: {total_rows} Total regions: {total_regions}")
         rows_dict = create_rows_from_regions(regions)
-        generate_file(rows_dict, output_path , 'rows_output.txt')
+        generate_rows_file(rows_dict, output_path , 'rows_output.txt')
         segments_list = create_segments_from_regions(regions)
         generate_segments_file(segments_list, output_path, 'segments_output.txt')
 
