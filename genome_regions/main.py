@@ -10,17 +10,11 @@ def main():
     """"""
     #'../Regions_Large.txt'
     parser=argparse.ArgumentParser()
-    parser.add_argument('-i', '--input',  help='image file',  required=True)
-    parser.add_argument('-o', '--output',  help='output path')
+    parser.add_argument('-i', '--input',  help='regions file',  required=True)
     args=parser.parse_args()
-    input_file = Path(args.i)
-    output_path = Path(args.o)
-    print(input_file)
-    print(output_path)
-    input_file = Path('../Regions_Large.txt')
-    output_path = Path('../')
-    if not output_path.exists():
-        output_path.mkdir()
+    input_file = Path(args.input)
+    output_path = Path('../output_folder')
+
     if input_file.exists():
         regions = get_regions_from_file(input_file)
         rows_dict = create_rows_from_regions(regions)

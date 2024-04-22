@@ -5,14 +5,18 @@ from models import Segment
 def get_regions_from_file(file_path):
     regions = []
     with open(file_path, 'r') as file:
-        content = file.readlines()
-        for line in content:
-            region = Region()
-            region.Start = int(line.split('\t')[0].strip())
-            region.End = int(line.split('\t')[1].strip())
-            regions.append(region)
-
-        return regions
+        try:
+            content = file.readlines()
+            for line in content:
+                region = Region()
+                region.Start = int(line.split('\t')[0].strip())
+                region.End = int(line.split('\t')[1].strip())
+                regions.append(region)
+        except:
+            raise ValueError("The file could not be read. Please check the format.")
+    if len(regions) == 0:
+        raise ValueError("The file is empty.")
+    return regions
 
 def generate_rows_file(rows_dict, output_path, file_name):
     with open(str(output_path) + '/' + file_name, 'w') as file:
@@ -50,8 +54,7 @@ def create_segments_from_regions(regions) -> list[Segment]:
 
 def create_rows_from_regions(regions) -> dict[int, list[Region]]:
     sorted_regions = sorted(regions, key=lambda x: x.Start)
-    key = 0
-    rows_dict = {key: [sorted_regions[0]]}
+    rows_dict = {1: [sorted_regions[0]]}
     for i, region in enumerate(sorted_regions):
         if i > 0:
             rows = len(list(rows_dict.keys()))
@@ -60,7 +63,7 @@ def create_rows_from_regions(regions) -> dict[int, list[Region]]:
                     rows_dict[row].append(region)
                     break
                 else:
-                    rows_dict[rows] = [region]
+                    rows_dict[rows + 1] = [region]
                     break
 
     return rows_dict
