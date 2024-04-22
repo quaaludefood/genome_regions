@@ -13,4 +13,4 @@ It generates two files in the output folder, rows_output.txt (for part one of th
 
 ### Dependencies
 - Python ([download](https://www.python.org/downloads/))
-- Python should be added to the environment variables of your system. If you are using Windows please refer to the instructions([instructions ](https://www.python.org/downloads/))
+- Python should be added to the environment variables of your system. If you are using Windows please refer to the [instructions ](https://www.python.org/downloads/)
