@@ -1,4 +1,5 @@
 from models import Region
+from models import Segment
 
 
 def get_regions_from_file(file_path):
@@ -20,34 +21,49 @@ def generate_file(regions_dict, output_path, file_name):
         for key in regions_dict.keys():
             for region in regions_dict[key]:
                 file.write(f"{region.Start}\t{region.End}\n")
+
+def generate_segments_file(segments_list, output_path, file_name):
+    with open(str(output_path) + '/' + file_name, 'w') as file:
+        for segment in segments_list:
+            file.write(f"{segment.regions_count()}\t{segment.start()}\t{segment.end()}\n")
     
 
-def create_dictionary_from_regions(regions, create_segments):
+# def create_dictionary_from_regions(regions, create_segments):
+#     sorted_regions = sorted(regions, key=lambda x: x.Start)
+#     regions_dict = {0: [sorted_regions[0]]}
+#     if create_segments:
+#         return create_segments_from_regions(sorted_regions, regions_dict)
+#     else:
+#         return create_rows_from_regions(sorted_regions, regions_dict)
+
+
+def create_segments_from_regions(regions) -> list[Segment]:
     sorted_regions = sorted(regions, key=lambda x: x.Start)
     regions_dict = {0: [sorted_regions[0]]}
-    if create_segments:
-        return create_segments_from_regions(sorted_regions, regions_dict)
-    else:
-        return create_rows_from_regions(sorted_regions, regions_dict)
-
-
-def create_segments_from_regions(sorted_regions, regions_dict):
+    segments = []
     key = 0
     for i, region in enumerate(sorted_regions):
         if i > 0:           
-            while i < len(sorted_regions):                
+            while i < len(sorted_regions):            
                 if region.Start <= regions_dict[key][len(regions_dict[key])-1].End:
-                    if region.End > regions_dict[key][len(regions_dict[key])-1].End:                       
-                        regions_dict[key][len(regions_dict[key])-1].End = region.End                    
+                    if region.End > regions_dict[key][len(regions_dict[key])-1].End:
+                        regions_dict[key].append(region)
+                  
                     break
                 else:
                     key = key + 1
                     regions_dict[key] = [region]
                     break
+    for key in regions_dict.keys():
+        segment = Segment()
+        for region in regions_dict[key]:
+            segment.add_region(region)
+        segments.append(segment)
+    return segments
 
-    return regions_dict
-
-def create_rows_from_regions(sorted_regions, regions_dict):
+def create_rows_from_regions(regions) -> dict[int, list[Region]]:
+    sorted_regions = sorted(regions, key=lambda x: x.Start)
+    regions_dict = {0: [sorted_regions[0]]}
     for i, region in enumerate(sorted_regions):
         if i > 0:
             keys = len(list(regions_dict.keys()))
