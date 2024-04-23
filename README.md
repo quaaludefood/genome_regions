@@ -10,7 +10,7 @@ Time taken to develop: Approx 8 hours
 - Naviate to the inner genome_regions directory
 - The application accepts a commandline argument specifying the location of the input file, e.g:
 `python main.py -i=../Regions_Small.txt`
-- It generates two files in the output folder, rows_output.txt (for part one of the assignment) and segments_output.txt (for part two of the assignment)
+- It generates two files in the output folder, rows_output.timestamp.txt (for part one of the assignment) and segments_output.timestamp.txt (for part two of the assignment)
 
 ### Dependencies
 - Python ([download](https://www.python.org/downloads/))
