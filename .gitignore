@@ -1,3 +1,4 @@
 #Text files
 *.txt
+#Compiled source
 *.pyc
