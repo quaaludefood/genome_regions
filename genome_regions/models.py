@@ -1,9 +1,11 @@
 class Region():
+    '''Class to represent a region.'''
     Start: int
     End: int
 
 
 class Segment():
+    '''Class to represent a segment of overlapping regions.'''
     Regions: list[Region]
     def __init__(self):
         self.Regions = []
