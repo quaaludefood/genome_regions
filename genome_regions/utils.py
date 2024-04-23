@@ -2,7 +2,8 @@ from models import Region
 from models import Segment
 
 
-def get_regions_from_file(file_path):
+def get_regions_from_file(file_path) -> list[Region]:
+    '''Reads a file with regions and returns a list of Region objects.'''
     regions = []
     with open(file_path, 'r') as file:
         try:
@@ -19,18 +20,21 @@ def get_regions_from_file(file_path):
     return regions
 
 def generate_rows_file(rows_dict, output_path, file_name):
+    '''Generates a file with the regions assigned to rows.'''
     with open(str(output_path) + '/' + file_name, 'w') as file:
         for row in rows_dict.keys():
             for region in rows_dict[row]:
                 file.write(f"{row}\t{region.Start}\t{region.End}\n")
 
 def generate_segments_file(segments_list, output_path, file_name):
+    '''Generates a file with the segments of overlapping regions.'''
     with open(str(output_path) + '/' + file_name, 'w') as file:
         for segment in segments_list:
             file.write(f"{segment.regions_count()}\t{segment.start()}\t{segment.end()}\n")
     
 
 def create_segments_from_regions(regions) -> list[Segment]:
+    '''Creates a list of Segment objects from a list of Region objects.'''
     sorted_regions = sorted(regions, key=lambda x: x.Start)
     key = 0
     regions_dict = {key: [sorted_regions[0]]}
@@ -53,6 +57,7 @@ def create_segments_from_regions(regions) -> list[Segment]:
     return segments
 
 def create_rows_from_regions(regions) -> dict[int, list[Region]]:
+    '''Creates a dictionary with the regions assigned to rows.'''
     sorted_regions = sorted(regions, key=lambda x: x.Start)
     rows_dict = {1: [sorted_regions[0]]}
     for i, region in enumerate(sorted_regions):
